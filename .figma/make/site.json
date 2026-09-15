@@ -1,0 +1,10 @@
+{
+  "description": "Connect and engage with others through a social media platform featuring five tabs for browsing, liking, sharing, and commenting on content.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
