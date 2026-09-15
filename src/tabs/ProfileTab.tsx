@@ -41,7 +41,7 @@ export default function ProfileTab() {
         <h2 className="font-bold text-base" style={{ color: "var(--color-text)" }}>Lorum Ipsum</h2>
         <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>@lorumipsum</p>
         <p className="text-sm mt-2 leading-relaxed" style={{ color: "var(--color-text)" }}>
-          Photographer & traveler. Chasing light in all the right places. Based in San Francisco ✦ Everywhere else.
+          Hey it's Lorem! I am THE fashion icon on ootd. I love to share my outfits and inspire others to dress up and feel confident. Follow me for daily fashion tips and outfit ideas!
         </p>
         <div className="flex gap-1 items-center mt-1.5">
           <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
