@@ -1,50 +1,8 @@
 import { useState } from "react";
 
-interface Post {
-  id: number;
-  user: string;
-  handle: string;
-  avatar: string;
-  time: string;
-  content: string;
-  image?: string;
-  likes: number;
-  comments: number;
-  shares: number;
-  liked: boolean;
-  shared: boolean;
-}
+import { initialPosts, matchesPost, matchesCategory, getPostTags, type Post } from "../posts";
 
-const initialPosts: Post[] = [
-  {
-    id: 1, user: "Maya Chen", handle: "@mayachen", time: "2m ago",
-    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=80&h=80&fit=crop&auto=format",
-    content: "Golden hour in Kyoto never disappoints. Three weeks into this trip and every sunset still takes my breath away. 🌅",
-    image: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&h=360&fit=crop&auto=format",
-    likes: 1284, comments: 47, shares: 89, liked: false, shared: false,
-  },
-  {
-    id: 2, user: "Rohan Mehta", handle: "@rohanmehta", time: "18m ago",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&auto=format",
-    content: "Just shipped v2.0 of my open-source project after 6 months of work. 847 commits, 12 contributors, and countless late nights — totally worth it. Check the link in bio!",
-    likes: 672, comments: 118, shares: 204, liked: false, shared: false,
-  },
-  {
-    id: 3, user: "Sofia Reyes", handle: "@sofiareyes", time: "1h ago",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&auto=format",
-    content: "Morning run along the coast. 8km in 42 minutes — new personal best! The sea air is something else.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=380&fit=crop&auto=format",
-    likes: 398, comments: 33, shares: 15, liked: true, shared: false,
-  },
-  {
-    id: 4, user: "James Okafor", handle: "@jamesokafor", time: "3h ago",
-    avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&auto=format",
-    content: "Hot take: the best productivity tool is still a blank notebook and a good pen. Fight me.",
-    likes: 2104, comments: 287, shares: 562, liked: false, shared: false,
-  },
-];
-
-export default function FeedTab() {
+export default function FeedTab({ onTagSearch, search = "", category = "All" }: { onTagSearch: (tag: string) => void; search?: string; category?: string }) {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [commentInput, setCommentInput] = useState<{ [id: number]: string }>({});
   const [openComment, setOpenComment] = useState<number | null>(null);
@@ -77,13 +35,13 @@ export default function FeedTab() {
 
   return (
     <div className="flex flex-col gap-0">
-      {posts.map((post) => (
+      {posts.filter(post => matchesPost(post, search) && matchesCategory(post, category)).map((post) => (
         <article key={post.id} className="flex flex-col"
           style={{ borderBottom: "1px solid var(--color-border)" }}>
           <div className="flex items-start gap-3 px-4 pt-4">
             <img src={post.avatar} alt={post.user}
-              className="w-10 h-10 rounded-full object-cover shrink-0 ring-2"
-              style={{ ringColor: "var(--color-border)" }} />
+              className="w-10 h-10 rounded-full object-cover shrink-0"
+              style={{ boxShadow: "0 0 0 2px var(--color-border)" }} />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="font-semibold text-sm" style={{ color: "var(--color-text)" }}>{post.user}</span>
@@ -95,6 +53,9 @@ export default function FeedTab() {
           </div>
 
 
+          <div className="flex flex-wrap gap-2 px-4 pt-2">
+            {getPostTags(post).map(tag => <button key={tag} onClick={() => onTagSearch(tag)} className="text-xs font-medium hover:underline" style={{ color: "var(--color-accent)" }}>{tag}</button>)}
+          </div>
           {post.image && (
             <div className="mt-3 mx-4 rounded-2xl overflow-hidden"
               style={{ background: "var(--color-muted)" }}>

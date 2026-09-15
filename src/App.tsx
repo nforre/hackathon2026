@@ -10,6 +10,9 @@ type Tab = "feed" | "explore" | "notifications" | "messages" | "profile";
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>("feed");
 
+  const [search, setSearch] = useState("");
+  const searchTag = (tag: string) => { setSearch(tag); setActiveTab("explore"); };
+
   const tabs: { id: Tab; label: string; icon: string }[] = [
     { id: "feed", label: "Feed", icon: "home" },
     { id: "explore", label: "Explore", icon: "search" },
@@ -36,8 +39,8 @@ export default function App() {
 
       {/* Content area */}
       <main className="flex-1 overflow-y-auto">
-        {activeTab === "feed" && <FeedTab />}
-        {activeTab === "explore" && <ExploreTab />}
+        {activeTab === "feed" && <FeedTab onTagSearch={searchTag} />}
+        {activeTab === "explore" && <ExploreTab search={search} onSearchChange={setSearch} />}
         {activeTab === "notifications" && <NotificationsTab />}
         {activeTab === "messages" && <MessagesTab />}
         {activeTab === "profile" && <ProfileTab />}
